@@ -1,4 +1,4 @@
-# lru_cache
+# LRU Cache
 Least Recently Used Cache in Python
 
 
