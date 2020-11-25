@@ -1,6 +1,7 @@
 # LRU Cache
 Least Recently Used Cache in Python
 
+To run: python main.py
 
 
 ### Key Requirements:
