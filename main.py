@@ -10,10 +10,9 @@ class LRUC:
 		self.keys = {} 
 		self.items = []
 
-	# put the value of a key.
 	def put(self, key, value):
 		if(key in self.keys):
-			self.check_and_remove(key)
+			self.delete(key)
 		else:
 			if(len(self.items)+1 > self.max_size):
 				k = self.items.pop()
@@ -21,35 +20,29 @@ class LRUC:
 		self.keys[key] = value
 		self.items.insert(0,key)
 
-	# if the key exists remove it from both the list and the map
-	def check_and_remove(self, key):
+	# get the value of a key.
+	def get_value(self, key):
+		if(key in self.keys):
+			value = self.keys[key]
+			self.delete(key)
+			self.keys[key] = value
+			self.items.insert(0,key)
+			return value
+		return None
+	
+	# delete a key (attempting to delete a key that doesn't exist is a no-op)
+	def delete(self, key):
 		if key in self.keys:
 			for i in range(len(self.items)):
 				if(self.items[i] == key):
 					del self.items[i]
 					break
 			del self.keys[key]
-			return True
-		return False
-
-	# get the value of a key.
-	def get_value(self, key):
-		if(key in self.keys):
-			value = self.keys[key]
-			self.check_and_remove(key)
-			self.keys[key] = value
-			self.items.insert(0,key)
-			return value
-		return None
-
-	
-	# delete a key (attempting to delete a key that doesn't exist is a no-op)
-	def delete(self,key):
-		return
 
 	# remote all items from the cache
 	def reset(self):
-
+		self.items = []
+		self.keys = {}
 		return
 
 
@@ -93,9 +86,9 @@ lruc.get_value("ben")
 assert lruc.items[0] == "ben", "wrong order"
 assert len(lruc.items) <= size, "size does not match the max_size"
 
-print("items:", lruc.items)
-print("keys:", lruc.keys)
-
+lruc.reset()
+assert len(lruc.items) == 0, "reset failed"
+assert len(lruc.keys) == 0, "reset failed"
 
 print("Finished! :D")
 
